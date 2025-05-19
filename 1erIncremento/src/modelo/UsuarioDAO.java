@@ -107,5 +107,19 @@ public class UsuarioDAO {
         }
     
     }
+    
+    public boolean eliminarUsuario(int dni){
+        String sql = "DELETE FROM usuarios where dni = ?";
+        try(Connection con = Conexion.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+        
+            ps.setInt(1, dni);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas >0;
+        }catch(SQLException e){
+            System.out.println("Error al eliminar usuario: "+e.getMessage());
+            return false;
+        }
+    }
 
 }

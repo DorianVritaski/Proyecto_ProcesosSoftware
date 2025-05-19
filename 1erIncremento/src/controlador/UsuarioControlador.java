@@ -34,6 +34,19 @@ public class UsuarioControlador {
             }
         });
         
+        this.vista.btnVerUsuarios.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vista.tablaUsuarios vistaTabla = new vista.tablaUsuarios();
+                new controlador.TablaUsuariosControlador(vistaTabla);
+                vistaTabla.setVisible(true);
+                vistaTabla.setLocationRelativeTo(null);
+                
+            }
+        
+        });   
+        
     }
     
     private void registrarUsuario(){

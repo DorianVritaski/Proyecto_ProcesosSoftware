@@ -329,8 +329,8 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     
     private void btnVerUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUsuariosActionPerformed
         // TODO add your handling code here:
-        tablaUsuarios verUsuariosForm = new tablaUsuarios();
-        verUsuariosForm.setVisible(true);
+        //tablaUsuarios verUsuariosForm = new tablaUsuarios();
+        //verUsuariosForm.setVisible(true);
     }//GEN-LAST:event_btnVerUsuariosActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -377,7 +377,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar;
     public javax.swing.JButton btnRegistrar;
     public javax.swing.JButton btnSalir;
-    private javax.swing.JButton btnVerUsuarios;
+    public javax.swing.JButton btnVerUsuarios;
     public javax.swing.JComboBox cbxTipo;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

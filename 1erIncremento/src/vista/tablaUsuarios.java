@@ -32,6 +32,7 @@ public class tablaUsuarios extends javax.swing.JFrame {
                 buscarUsuario();
             }
         });
+  
         
         btnGuardar.addActionListener(new ActionListener(){
             @Override
@@ -125,6 +126,11 @@ public class tablaUsuarios extends javax.swing.JFrame {
         btnGuardar.setText("GUARDAR CAMBIOS");
 
         btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -207,28 +213,32 @@ public class tablaUsuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public void cargarTablaUsuarios() {
         UsuarioDAO dao = new UsuarioDAO();
-    DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-    modelo.setRowCount(0); // Limpiar la tabla
+        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
 
-    for (Usuario u : dao.listarUsuarios()) {
-        Object[] fila = {
-            u.getDni(),
-            u.getNombre(),
-            u.getApellidos(),
-            u.getDeclaracionJurada(),
-            u.getCorreo(),
-            u.getCelular(),
-            u.getTipoUsuario(),
-            u.getFechaRegistro(),
-            u.getUrlDecJurada()
-        };
-        modelo.addRow(fila);
-    }
+        for (Usuario u : dao.listarUsuarios()) {
+            Object[] fila = {
+                u.getDni(),
+                u.getNombre(),
+                u.getApellidos(),
+                u.getDeclaracionJurada(),
+                u.getCorreo(),
+                u.getCelular(),
+                u.getTipoUsuario(),
+                u.getFechaRegistro(),
+                u.getUrlDecJurada()
+            };
+            modelo.addRow(fila);
+        }
     }
     
     public static void main(String args[]) {
@@ -302,7 +312,7 @@ public class tablaUsuarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
