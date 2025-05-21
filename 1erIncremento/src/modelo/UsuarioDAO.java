@@ -1,5 +1,6 @@
 package modelo;
 
+import java.sql.CallableStatement;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet; // También falta este
@@ -32,7 +33,7 @@ public class UsuarioDAO {
     
     public List<Usuario> listarUsuarios() {
         List<Usuario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios";
+        String sql = "{CALL sp_listar_usuarios()}";
 
         try (Connection con = Conexion.getConexion(); 
              PreparedStatement ps = con.prepareStatement(sql);
@@ -86,38 +87,45 @@ public class UsuarioDAO {
         return null;
     }
     
-    public boolean actualizarUsuario(Usuario u){
-        String sql = "UPDATE usuarios SET nombre = ?, apellidos = ?, declaracion_jurada = ?, correo = ?, celular = ?, tipo_usuario = ?, fecha_registro = ?, url_DecJurada = ? WHERE dni = ?";
-        try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql)){
-            ps.setString(1, u.getNombre());
-            ps.setString(2, u.getApellidos());
-            ps.setString(3, u.getDeclaracionJurada());
-            ps.setString(4, u.getCorreo());
-            ps.setString(5, u.getCelular());
-            ps.setString(6, u.getTipoUsuario());
-            ps.setString(7, u.getFechaRegistro());
-            ps.setString(8, u.getUrlDecJurada());
-            ps.setInt(9, u.getDni());
-            
-            ps.executeUpdate();
-            return true;
-        }catch(SQLException e){
-            System.out.println("Error al actualizar usuario: "+ e.getMessage());
-            return false;
-        }
+public boolean guardarCambiosUsuarios(Usuario u) {
+    String sql = "{CALL sp_actualizar_usuario(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
     
+    try (Connection con = Conexion.getConexion(); 
+         CallableStatement cs = con.prepareCall(sql)) {
+
+        cs.setInt(1, u.getDni());
+        cs.setString(2, u.getNombre());
+        cs.setString(3, u.getApellidos());
+        cs.setString(4, u.getDeclaracionJurada());
+        cs.setString(5, u.getCorreo());
+        cs.setString(6, u.getCelular());
+        cs.setString(7, u.getTipoUsuario());
+
+        // Convertimos fecha de String a java.sql.Date si es necesario
+        cs.setDate(8, java.sql.Date.valueOf(u.getFechaRegistro())); // asegúrate que sea formato yyyy-MM-dd
+
+        cs.setString(9, u.getUrlDecJurada());
+
+        cs.execute();
+        return true;
+
+    } catch (SQLException e) {
+        System.out.println("Error al actualizar usuario (SP): " + e.getMessage());
+        return false;
     }
+}
+
     
-    public boolean eliminarUsuario(int dni){
-        String sql = "DELETE FROM usuarios where dni = ?";
-        try(Connection con = Conexion.getConexion();
-            PreparedStatement ps = con.prepareStatement(sql)) {
-        
-            ps.setInt(1, dni);
-            int filasAfectadas = ps.executeUpdate();
-            return filasAfectadas >0;
-        }catch(SQLException e){
-            System.out.println("Error al eliminar usuario: "+e.getMessage());
+    public boolean eliminarUsuario(int dni) {
+        String sql = "{CALL sp_eliminar_usuario(?)}";
+        try (Connection con = Conexion.getConexion();
+             CallableStatement cs = con.prepareCall(sql)) {
+
+            cs.setInt(1, dni);
+            int filasAfectadas = cs.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar usuario: " + e.getMessage());
             return false;
         }
     }
