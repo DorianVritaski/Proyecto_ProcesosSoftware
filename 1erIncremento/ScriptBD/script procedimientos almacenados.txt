@@ -1,0 +1,99 @@
+registrarUsuario
+CALL SP_A_Tabla_usuarios (?, ?, ?, ?, ?, ?, ?, ?, ?)
+EXEC sp_helptext 'SP_A_Tabla_usuarios';
+
+
+CREATE PROCEDURE SP_A_Tabla_usuarios     
+@dni INT,     
+@nombre VARCHAR(50),    
+@apellidos VARCHAR(50),     
+@declaracion_jurada CHAR(1),     
+@correo VARCHAR(50),     
+@celular VARCHAR(10),     
+@tipo_usuario VARCHAR(20),    
+@fecha_registro DATE,     
+@url_DecJurada VARCHAR(255) 
+AS 
+BEGIN     
+	INSERT INTO usuarios (dni, nombre, apellidos, declaracion_jurada, correo, celular, tipo_usuario, fecha_registro, url_DecJurada)     
+	VALUES (@dni, @nombre, @apellidos, @declaracion_jurada, @correo, @celular, @tipo_usuario, @fecha_registro, @url_DecJurada) 
+END
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+listarUsuarios
+CALL sp_listar_usuarios()
+
+CREATE PROCEDURE sp_listar_usuarios  
+AS  
+BEGIN  
+    SELECT * FROM usuarios;  
+END;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+buscarUsuarioPorDni
+CALL SP_C_Tabla_usuarios(?)
+
+CREATE PROCEDURE SP_C_Tabla_usuarios  
+    @Dni INT  
+AS  
+BEGIN  
+    SET NOCOUNT ON;  
+  
+    SELECT   
+        dni,  
+        nombre,  
+        apellidos,  
+        declaracion_jurada,  
+        correo,  
+        celular,  
+        tipo_usuario,  
+        fecha_registro,  
+        url_DecJurada  
+    FROM usuarios  
+    WHERE dni = @Dni;  
+END
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+guardarCambiosUsuarios
+CALL sp_actualizar_usuario
+
+CREATE PROCEDURE sp_actualizar_usuario  
+    @dni INT,  
+    @nombre VARCHAR(50),  
+    @apellidos VARCHAR(50),  
+    @declaracion_jurada CHAR(1),  
+    @correo VARCHAR(50),  
+    @celular VARCHAR(10),  
+    @tipo_usuario VARCHAR(20),  
+    @fecha_registro DATE,  
+    @url_DecJurada VARCHAR(255)  
+AS  
+BEGIN  
+    UPDATE usuarios  
+    SET nombre = @nombre,  
+        apellidos = @apellidos,  
+        declaracion_jurada = @declaracion_jurada,  
+        correo = @correo,  
+        celular = @celular,  
+        tipo_usuario = @tipo_usuario,  
+        fecha_registro = @fecha_registro,  
+        url_DecJurada = @url_DecJurada  
+    WHERE dni = @dni;  
+END;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+eliminarUsuario
+CALL sp_eliminar_usuario(?)
+
+CREATE PROCEDURE sp_eliminar_usuario  
+    @dni INT  
+AS  
+BEGIN  
+    DELETE FROM usuarios  
+    WHERE dni = @dni;  
+END;  
+
