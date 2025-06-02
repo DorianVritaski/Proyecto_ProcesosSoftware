@@ -67,7 +67,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         btnLimpiar2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         btnVerUsuarios = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnVerServicios = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnRegistrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -274,7 +274,12 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Ver Servicios");
+        btnVerServicios.setText("Ver Servicios");
+        btnVerServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerServiciosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -283,7 +288,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVerServicios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnVerUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18))
         );
@@ -293,7 +298,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addComponent(btnVerUsuarios)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnVerServicios)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -408,6 +413,10 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         limpiar2();
     }//GEN-LAST:event_btnLimpiar2ActionPerformed
 
+    private void btnVerServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerServiciosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerServiciosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -449,10 +458,10 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar2;
     public javax.swing.JButton btnRegistrar;
     public javax.swing.JButton btnSalir;
+    public javax.swing.JButton btnVerServicios;
     public javax.swing.JButton btnVerUsuarios;
     public javax.swing.JComboBox cbxServ;
     public javax.swing.JComboBox cbxTipo;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

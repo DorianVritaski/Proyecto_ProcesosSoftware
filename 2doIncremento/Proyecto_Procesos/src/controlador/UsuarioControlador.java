@@ -17,12 +17,14 @@ import modelo.ServicioDAO;
 public class UsuarioControlador {
     private FrmRegistroUsuario vista;
     private UsuarioDAO dao;
+    //private DetalleServicioDAO dao;
     //private DetalleServicioDAO detalleDao;
     
     
     public UsuarioControlador(FrmRegistroUsuario vista){
         this.vista = vista;
         this.dao = new UsuarioDAO();
+        //this.dao = new DetalleServicioDAO();
         cargarServiciosEnCombo();
         //this.detalleDao = new DetalleServicioDAO(conexion);
         /*
@@ -72,7 +74,20 @@ public class UsuarioControlador {
                 
             }
         
-        });   
+        });
+        
+        this.vista.btnVerServicios.addActionListener(new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent e){
+                System.out.println("Click detectado");
+                vista.tablaServicios vistaTabla2 = new vista.tablaServicios();
+                new controlador.TablaServiciosControlador(vistaTabla2);
+                vistaTabla2.setVisible(true);
+                vistaTabla2.setLocationRelativeTo(null);
+            }
+        
+        });
         
     }
     

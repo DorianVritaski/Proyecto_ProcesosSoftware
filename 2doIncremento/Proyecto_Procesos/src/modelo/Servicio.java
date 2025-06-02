@@ -10,6 +10,10 @@ public class Servicio {
         this.tipoServicio = tipoServicio;
     }
     
+    public Servicio(){
+    
+    }
+    
     public int getIdServicio(){
         return idServicio;
     }

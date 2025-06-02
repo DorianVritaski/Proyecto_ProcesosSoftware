@@ -15,7 +15,7 @@ public class Usuario {
     private String fechaRegistro;
     private String urlDecJurada;
     
-     public Usuario(int dni, String nombre, String apellidos, String declaracionJurada, String correo, String celular, String tipoUsuario, String fechaRegistro, String urlDecJurada) {
+    public Usuario(int dni, String nombre, String apellidos, String declaracionJurada, String correo, String celular, String tipoUsuario, String fechaRegistro, String urlDecJurada) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellidos = apellidos;

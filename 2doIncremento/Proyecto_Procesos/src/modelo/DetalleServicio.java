@@ -15,6 +15,10 @@ public class DetalleServicio {
     
     }
     
+    public DetalleServicio(){
+    
+    }
+    
     public int getDniFK(){
         return dniFK;
     }
