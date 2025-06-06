@@ -39,8 +39,8 @@ public class tablaServicios extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblServicios = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -59,20 +59,32 @@ public class tablaServicios extends javax.swing.JFrame {
 
         tblServicios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "DNI:", "Nombre:", "Apellidos", "Servicio", "URL Servicio", "Fecha"
+                "ID", "DNI:", "Nombre:", "Apellidos", "Servicio", "URL Servicio", "Fecha"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblServicios);
+        if (tblServicios.getColumnModel().getColumnCount() > 0) {
+            tblServicios.getColumnModel().getColumn(0).setResizable(false);
+            tblServicios.getColumnModel().getColumn(0).setPreferredWidth(1);
+        }
 
-        jButton3.setText("GUARDAR CAMBIOS");
+        btnGuardar.setText("GUARDAR CAMBIOS");
 
-        jButton4.setText("ELIMINAR");
+        btnEliminar.setText("ELIMINAR");
 
         jButton5.setText("ATRÁS");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -103,9 +115,9 @@ public class tablaServicios extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(246, 246, 246)
-                .addComponent(jButton3)
+                .addComponent(btnGuardar)
                 .addGap(158, 158, 158)
-                .addComponent(jButton4)
+                .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addGap(157, 157, 157))
@@ -123,8 +135,8 @@ public class tablaServicios extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnEliminar)
                     .addComponent(jButton5))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -153,23 +165,15 @@ public class tablaServicios extends javax.swing.JFrame {
         cargarTablaServicios();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void cargarTablaServicios(){
-        DetalleServicioDAO dao = new DetalleServicioDAO();
-        DefaultTableModel modelo = (DefaultTableModel) tblServicios.getModel();
-        modelo.setRowCount(0);
-        
-        for(DetalleServicioVista d : dao.listarServicios()){
-            Object[] fila = {
-                    d.getDni(),
-                    d.getNombre(),
-                    d.getApellidos(),
-                    d.getServicio(),
-                    d.getUrlServicio(),
-                    d.getFechaServicio()
-            };
-            modelo.addRow(fila);   
-        }
+    public void cargarTablaServicios() {
+    DetalleServicioDAO dao = new DetalleServicioDAO();
+    DefaultTableModel modelo = (DefaultTableModel) tblServicios.getModel();
+    modelo.setRowCount(0);
+
+    for (Object[] fila : dao.listarServicios()) {
+        modelo.addRow(fila);
     }
+}
     
     
     
@@ -210,9 +214,9 @@ public class tablaServicios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnEliminar;
+    public javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
