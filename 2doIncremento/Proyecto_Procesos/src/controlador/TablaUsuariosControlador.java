@@ -53,7 +53,7 @@ public class TablaUsuariosControlador {
         }
 
         int confirm = JOptionPane.showConfirmDialog(vista, 
-                "¿Está seguro que desea eliminar este usuario?", 
+                "¿Está seguro que desea eliminar este usuario?. Esto tambien eliminará los servicios asociados si los tiene?", 
                 "Confirmación", 
                 JOptionPane.YES_NO_OPTION);
 
