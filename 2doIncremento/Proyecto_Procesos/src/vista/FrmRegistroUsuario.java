@@ -103,6 +103,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
 
         jLabel9.setText("Fecha:");
 
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/escoba 3.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,7 +195,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLimpiar)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         tabRegUsuarios.addTab("Registro Usuarios", jPanel1);
@@ -209,6 +210,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
 
         jLabel14.setText("URL Servicio:");
 
+        btnLimpiar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/escoba 3.png"))); // NOI18N
         btnLimpiar2.setText("Limpiar");
         btnLimpiar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,7 +262,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                     .addComponent(txtUrlServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(58, 58, 58)
                 .addComponent(btnLimpiar2)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
 
         tabRegUsuarios.addTab("Registro Servicios", jPanel2);

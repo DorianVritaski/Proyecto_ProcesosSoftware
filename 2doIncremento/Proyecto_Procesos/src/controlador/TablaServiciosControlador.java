@@ -1,7 +1,11 @@
 package controlador;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -9,44 +13,89 @@ import javax.swing.table.DefaultTableModel;
 import modelo.DetalleServicio;
 import modelo.DetalleServicioDAO;
 import modelo.DetalleServicioVista;
+import modelo.Servicio;
 import modelo.ServicioDAO;
 import vista.tablaServicios;
 
-
 public class TablaServiciosControlador {
+
     private tablaServicios vista;
     private DetalleServicio dao;
-    
-    public TablaServiciosControlador(tablaServicios vista){
+
+    public TablaServiciosControlador(tablaServicios vista) {
         this.vista = vista;
         this.dao = new DetalleServicio();
-        
-        this.vista.btnBuscar.addActionListener(new ActionListener(){
-        
+        cargarServiciosEnCombo();
+
+        this.vista.btnBuscar.addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 buscarServicioVistaPorDni();
             }
         });
-        
+
         //agregando funcionalidad para eliminar
-        this.vista.btnEliminar.addActionListener(new ActionListener(){
-        
+        this.vista.btnEliminar.addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 eliminarServicio();
             }
-            
+
         });
-        
+
         this.vista.btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarCambiosServicios();
             }
         });
-        
+
+        this.vista.btnBuscarServ.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarTipoServicio();
+            }
+        });
+
+        this.vista.btnBuscarFecha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPorFecha();
+
+            }
+        });
+
+        this.vista.tblServicios.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // SOLO en doble clic
+                    int fila = vista.tblServicios.rowAtPoint(e.getPoint());
+                    int columna = vista.tblServicios.columnAtPoint(e.getPoint());
+
+                    if (columna == 5 && fila != -1) {
+                        Object valorCelda = vista.tblServicios.getValueAt(fila, columna);
+
+                        if (valorCelda != null) {
+                            String url = valorCelda.toString().trim();
+
+                            if (!url.isEmpty()) {
+                                try {
+                                    Desktop.getDesktop().browse(new URI(url));
+                                } catch (Exception ex) {
+                                    JOptionPane.showMessageDialog(vista, "No se pudo abrir la URL: " + ex.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
     }
+
     //implementnado eliminarServicio();
     private void eliminarServicio() {
         int filaSeleccionada = vista.tblServicios.getSelectedRow();
@@ -57,10 +106,10 @@ public class TablaServiciosControlador {
         }
 
         int confirm = JOptionPane.showConfirmDialog(
-            vista, 
-            "¿Está seguro que desea eliminar este servicio?", 
-            "Confirmación", 
-            JOptionPane.YES_NO_OPTION
+                vista,
+                "¿Está seguro que desea eliminar este servicio?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -77,13 +126,10 @@ public class TablaServiciosControlador {
                 JOptionPane.showMessageDialog(vista, "No se pudo eliminar el servicio.");
             }
         }
-}
+    }
 
-    
-    
-    
     private void buscarServicioVistaPorDni() {
-    String dniTexto = vista.txtBuscarDni.getText();
+        String dniTexto = vista.txtBuscarDni.getText();
         if (dniTexto.isEmpty()) {
             JOptionPane.showMessageDialog(vista, "Ingrese un DNI para buscar.");
             return;
@@ -118,7 +164,7 @@ public class TablaServiciosControlador {
             JOptionPane.showMessageDialog(vista, "Ingrese un DNI válido.");
         }
     }
-    
+
     private void guardarCambiosServicios() {
         int fila = vista.tblServicios.getSelectedRow();
 
@@ -156,6 +202,84 @@ public class TablaServiciosControlador {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(vista, "Error al guardar los cambios: " + e.getMessage());
+        }
+    }
+
+    private void cargarServiciosEnCombo() {
+        ServicioDAO servicioDAO = new ServicioDAO();
+        vista.cbxServ2.removeAllItems();
+
+        for (Servicio s : servicioDAO.listarServicios()) {
+            vista.cbxServ2.addItem(s.getTipoServicio());
+        }
+
+    }
+
+    private void buscarTipoServicio() {
+        String tipoServicio = (String) vista.cbxServ2.getSelectedItem();
+
+        if (tipoServicio == null || tipoServicio.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Seleccione un tipo de servicio para buscar.");
+            return;
+        }
+
+        DetalleServicioDAO dao = new DetalleServicioDAO();
+        List<DetalleServicioVista> lista = dao.buscarServiciosPorTipo(tipoServicio);
+
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblServicios.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        if (!lista.isEmpty()) {
+            for (DetalleServicioVista d : lista) {
+                Object[] fila = {
+                    d.getIdDetalleServ(),
+                    d.getDni(),
+                    d.getNombre(),
+                    d.getApellidos(),
+                    d.getServicio(),
+                    d.getUrlServicio(),
+                    d.getFechaServicio()
+                };
+                modelo.addRow(fila);
+            }
+        } else {
+            JOptionPane.showMessageDialog(vista, "No se encontraron servicios de ese tipo.");
+        }
+    }
+
+    private void buscarPorFecha() {
+        java.util.Date utilDesde = vista.dateDesde.getDate();
+        java.util.Date utilHasta = vista.dateHasta.getDate();
+
+        if (utilDesde == null || utilHasta == null) {
+            JOptionPane.showMessageDialog(vista, "Seleccione ambas fechas para buscar.");
+            return;
+        }
+
+        java.sql.Date sqlDesde = new java.sql.Date(utilDesde.getTime());
+        java.sql.Date sqlHasta = new java.sql.Date(utilHasta.getTime());
+
+        DetalleServicioDAO dao = new DetalleServicioDAO();
+        List<DetalleServicioVista> lista = dao.buscarServiciosPorFechas(sqlDesde, sqlHasta);
+
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblServicios.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
+
+        if (!lista.isEmpty()) {
+            for (DetalleServicioVista d : lista) {
+                Object[] fila = {
+                    d.getIdDetalleServ(),
+                    d.getDni(),
+                    d.getNombre(),
+                    d.getApellidos(),
+                    d.getServicio(),
+                    d.getUrlServicio(),
+                    d.getFechaServicio()
+                };
+                modelo.addRow(fila);
+            }
+        } else {
+            JOptionPane.showMessageDialog(vista, "No se encontraron servicios en ese rango de fechas.");
         }
     }
 

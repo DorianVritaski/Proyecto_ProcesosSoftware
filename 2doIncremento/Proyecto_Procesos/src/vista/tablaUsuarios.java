@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
 
-
 /**
  *
  * @author ACER
@@ -25,44 +24,44 @@ public class tablaUsuarios extends javax.swing.JFrame {
     public tablaUsuarios() {
         initComponents();
         cargarTablaUsuarios();
-        
+
         btnBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarUsuario();
             }
         });
-  
+
         /*
-        btnGuardar.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                int respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea guardar los cambios?", "Confirmación", JOptionPane.YES_NO_OPTION);
+         btnGuardar.addActionListener(new ActionListener(){
+         @Override
+         public void actionPerformed(ActionEvent e){
+         int respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro que desea guardar los cambios?", "Confirmación", JOptionPane.YES_NO_OPTION);
                 
-                if(respuesta == JOptionPane.YES_OPTION){
-                    DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-                    UsuarioDAO dao = new UsuarioDAO();
+         if(respuesta == JOptionPane.YES_OPTION){
+         DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+         UsuarioDAO dao = new UsuarioDAO();
                     
-                    for (int i = 0; i < modelo.getRowCount(); i++) {
-                        int dni = Integer.parseInt(modelo.getValueAt(i, 0).toString());
-                        String nombre = modelo.getValueAt(i, 1).toString();
-                        String apellidos = modelo.getValueAt(i, 2).toString();
-                        String declaracion = modelo.getValueAt(i, 3).toString();
-                        String correo = modelo.getValueAt(i, 4).toString();
-                        String celular = modelo.getValueAt(i, 5).toString();
-                        String tipo = modelo.getValueAt(i, 6).toString();
-                        String fecha = modelo.getValueAt(i, 7).toString();
-                        String url = modelo.getValueAt(i, 8).toString();
+         for (int i = 0; i < modelo.getRowCount(); i++) {
+         int dni = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+         String nombre = modelo.getValueAt(i, 1).toString();
+         String apellidos = modelo.getValueAt(i, 2).toString();
+         String declaracion = modelo.getValueAt(i, 3).toString();
+         String correo = modelo.getValueAt(i, 4).toString();
+         String celular = modelo.getValueAt(i, 5).toString();
+         String tipo = modelo.getValueAt(i, 6).toString();
+         String fecha = modelo.getValueAt(i, 7).toString();
+         String url = modelo.getValueAt(i, 8).toString();
                         
-                        Usuario u = new Usuario(dni, nombre, apellidos, declaracion, correo, celular, tipo, fecha, url);
-                        dao.actualizarUsuario(u);
-                    }
+         Usuario u = new Usuario(dni, nombre, apellidos, declaracion, correo, celular, tipo, fecha, url);
+         dao.actualizarUsuario(u);
+         }
                     
-                    JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
-                }
-            }
-        });
-        */
+         JOptionPane.showMessageDialog(null, "Datos actualizados correctamente");
+         }
+         }
+         });
+         */
     }
 
     /**
@@ -84,6 +83,17 @@ public class tablaUsuarios extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cbxTipoUsuario = new javax.swing.JComboBox();
+        btnBuscarTipo = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        dateDesde = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        dateHasta = new com.toedter.calendar.JDateChooser();
+        btnBuscarFecha = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        cbxDecJurada = new javax.swing.JComboBox();
+        btnBuscarDec = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -115,7 +125,7 @@ public class tablaUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Buscar:");
+        jLabel1.setText("Buscar DNI:");
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -138,6 +148,24 @@ public class tablaUsuarios extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Tipo:");
+
+        cbxTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Estudiante", "Docente", "Administrativo", "Externo" }));
+
+        btnBuscarTipo.setText("Buscar");
+
+        jLabel3.setText("Fecha desde:");
+
+        jLabel4.setText("Fecha hasta:");
+
+        btnBuscarFecha.setText("Buscar");
+
+        jLabel5.setText("Dec. Jurada");
+
+        cbxDecJurada.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "S", "N" }));
+
+        btnBuscarDec.setText("Buscar");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -149,7 +177,7 @@ public class tablaUsuarios extends javax.swing.JFrame {
                 .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(179, 179, 179))
+                .addGap(177, 177, 177))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -157,35 +185,75 @@ public class tablaUsuarios extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1081, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDniBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)
-                        .addGap(46, 46, 46)
-                        .addComponent(jButton2)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbxDecJurada, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscarDec))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtDniBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                                            .addComponent(cbxTipoUsuario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btnBuscar)
+                                                .addGap(46, 46, 46)
+                                                .addComponent(jButton2))
+                                            .addComponent(btnBuscarTipo)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(dateDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(dateHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnBuscarFecha)))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtDniBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar)
                     .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cbxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarTipo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(dateDesde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(dateHasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarFecha))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cbxDecJurada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarDec))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardar)
-                            .addComponent(btnEliminar))))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnEliminar)
+                    .addComponent(jButton1))
                 .addGap(31, 31, 31))
         );
 
@@ -250,7 +318,7 @@ public class tablaUsuarios extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -282,51 +350,62 @@ public class tablaUsuarios extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void buscarUsuario() {
-    String dniTexto = txtDniBuscar.getText();
-    if (dniTexto.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ingrese un DNI para buscar.");
-        return;
-    }
-
-    try {
-        int dni = Integer.parseInt(dniTexto);
-        UsuarioDAO dao = new UsuarioDAO();
-        Usuario u = dao.buscarUsuarioPorDni(dni);
-
-        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
-        modelo.setRowCount(0); // limpiar tabla
-
-        if (u != null) {
-            Object[] fila = {
-                u.getDni(),
-                u.getNombre(),
-                u.getApellidos(),
-                u.getDeclaracionJurada(),
-                u.getCorreo(),
-                u.getCelular(),
-                u.getTipoUsuario(),
-                u.getFechaRegistro(),
-                u.getUrlDecJurada()
-            };
-            modelo.addRow(fila);
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró un usuario con ese DNI.");
+        String dniTexto = txtDniBuscar.getText();
+        if (dniTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un DNI para buscar.");
+            return;
         }
 
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "El DNI debe ser un número entero.");
+        try {
+            int dni = Integer.parseInt(dniTexto);
+            UsuarioDAO dao = new UsuarioDAO();
+            Usuario u = dao.buscarUsuarioPorDni(dni);
+
+            DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+            modelo.setRowCount(0); // limpiar tabla
+
+            if (u != null) {
+                Object[] fila = {
+                    u.getDni(),
+                    u.getNombre(),
+                    u.getApellidos(),
+                    u.getDeclaracionJurada(),
+                    u.getCorreo(),
+                    u.getCelular(),
+                    u.getTipoUsuario(),
+                    u.getFechaRegistro(),
+                    u.getUrlDecJurada()
+                };
+                modelo.addRow(fila);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró un usuario con ese DNI.");
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El DNI debe ser un número entero.");
+        }
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    public javax.swing.JButton btnBuscarDec;
+    public javax.swing.JButton btnBuscarFecha;
+    public javax.swing.JButton btnBuscarTipo;
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnGuardar;
+    public javax.swing.JComboBox cbxDecJurada;
+    public javax.swing.JComboBox cbxTipoUsuario;
+    public com.toedter.calendar.JDateChooser dateDesde;
+    public com.toedter.calendar.JDateChooser dateHasta;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTable tblUsuarios;

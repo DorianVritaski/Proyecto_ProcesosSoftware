@@ -1,14 +1,22 @@
 package controlador;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.sql.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
 import vista.tablaUsuarios;
+import java.text.SimpleDateFormat;
 
 public class TablaUsuariosControlador {
+
     private tablaUsuarios vista;
     private UsuarioDAO dao;
 
@@ -23,26 +31,78 @@ public class TablaUsuariosControlador {
                 eliminarUsuario();
             }
         });
-        
+
         this.vista.btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarCambiosUsuarios();
             }
         });
-        
-        /*
-        this.vista.btnBuscar.addActionListener(new ActionListener() {
+
+        //agregando funcion de boton para filtrar usuarios por tipo
+        this.vista.btnBuscarTipo.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                buscarUsuario();
+                buscarTipoUsuario();
             }
         });
-        */
+
+        this.vista.btnBuscarFecha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPorFechas();
+            }
+        });
+
+        //agregando funcion de botnon para filtrar por declaracion jurada
+        this.vista.btnBuscarDec.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPorDecJurada();
+            }
+        });
+
+        this.vista.tblUsuarios.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // SOLO en doble clic
+                    int fila = vista.tblUsuarios.rowAtPoint(e.getPoint());
+                    int columna = vista.tblUsuarios.columnAtPoint(e.getPoint());
+
+                    if (columna == 8 && fila != -1) {
+                        Object valorCelda = vista.tblUsuarios.getValueAt(fila, columna);
+
+                        if (valorCelda != null) {
+                            String url = valorCelda.toString().trim();
+
+                            if (!url.isEmpty()) {
+                                try {
+                                    Desktop.getDesktop().browse(new URI(url));
+                                } catch (Exception ex) {
+                                    JOptionPane.showMessageDialog(vista, "No se pudo abrir la URL: " + ex.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+        /*
+         this.vista.btnBuscar.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+         buscarUsuario();
+         }
+         });
+         */
         // Agrega más botones aquí si los necesitas
         System.out.println("Controlador de tablaUsuarios inicializado.");
     }
-    
+
     private void eliminarUsuario() {
         System.out.println("Se hizo clic en el botón Eliminar");
         int filaSeleccionada = vista.tblUsuarios.getSelectedRow();
@@ -52,9 +112,9 @@ public class TablaUsuariosControlador {
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(vista, 
-                "¿Está seguro que desea eliminar este usuario?. Esto tambien eliminará los servicios asociados si los tiene?", 
-                "Confirmación", 
+        int confirm = JOptionPane.showConfirmDialog(vista,
+                "¿Está seguro que desea eliminar este usuario?. Esto tambien eliminará los servicios asociados si los tiene?",
+                "Confirmación",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -69,17 +129,16 @@ public class TablaUsuariosControlador {
                 JOptionPane.showMessageDialog(vista, "No se pudo eliminar el usuario.");
             }
         }
-        
 
     }
-    
+
     private void guardarCambiosUsuarios() {
         System.out.println("Nuevo valor en celda (0,1): " + vista.tblUsuarios.getValueAt(0, 1));
         int confirm = JOptionPane.showConfirmDialog(
-            vista,
-            "¿Está seguro de guardar los cambios realizados?",
-            "Confirmación",
-            JOptionPane.YES_NO_OPTION
+                vista,
+                "¿Está seguro de guardar los cambios realizados?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -100,7 +159,9 @@ public class TablaUsuariosControlador {
 
                     Usuario u = new Usuario(dni, nombre, apellidos, dj, correo, celular, tipoUsuario, fecha, url);
                     boolean actualizado = dao.guardarCambiosUsuarios(u);
-                    if (!actualizado) actualizacionExitosa = false;
+                    if (!actualizado) {
+                        actualizacionExitosa = false;
+                    }
 
                 } catch (Exception ex) {
                     actualizacionExitosa = false;
@@ -118,12 +179,110 @@ public class TablaUsuariosControlador {
         }
     }
 
-    
+    private void buscarTipoUsuario() {
+        String tipoSeleccionado = vista.cbxTipoUsuario.getSelectedItem().toString();
+
+        // Validar selección
+        if (tipoSeleccionado.equals("Seleccione") || tipoSeleccionado.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Seleccione un tipo de usuario válido.");
+            return;
+        }
+
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> listaFiltrada = dao.buscarPorTipo(tipoSeleccionado);
+
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        for (Usuario u : listaFiltrada) {
+            Object[] fila = {
+                u.getDni(),
+                u.getNombre(),
+                u.getApellidos(),
+                u.getDeclaracionJurada(),
+                u.getCorreo(),
+                u.getCelular(),
+                u.getTipoUsuario(),
+                u.getFechaRegistro(),
+                u.getUrlDecJurada()
+            };
+            modelo.addRow(fila);
+        }
+    }
+
+    private void buscarPorFechas() {
+        java.util.Date utilDesde = vista.dateDesde.getDate();
+        java.util.Date utilHasta = vista.dateHasta.getDate();
+
+        if (utilDesde == null || utilHasta == null) {
+            JOptionPane.showMessageDialog(vista, "Seleccione ambas fechas para buscar.");
+            return;
+        }
+
+        // Convertimos las fechas a String en formato yyyy-MM-dd
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.sql.Date fechaDesde = new java.sql.Date(utilDesde.getTime());
+        java.sql.Date fechaHasta = new java.sql.Date(utilHasta.getTime());
+
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> lista = dao.buscarUsuariosPorFechas(fechaDesde, fechaHasta);
+
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
+        modelo.setRowCount(0);
+
+        for (Usuario u : lista) {
+            Object[] fila = {
+                u.getDni(),
+                u.getNombre(),
+                u.getApellidos(),
+                u.getDeclaracionJurada(),
+                u.getCorreo(),
+                u.getCelular(),
+                u.getTipoUsuario(),
+                u.getFechaRegistro(),
+                u.getUrlDecJurada()
+            };
+            modelo.addRow(fila);
+        }
+
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "No se encontraron usuarios en el rango de fechas.");
+        }
+    }
 
     private void buscarUsuario() {
         // Aquí puedes usar dao.buscarUsuarioPorDni(...) y actualizar la tabla con el resultado
         // Te ayudo con eso si lo necesitas
     }
-    
-    
+
+    private void buscarPorDecJurada() {
+        String seleccion = (String) vista.cbxDecJurada.getSelectedItem();
+
+        if (seleccion == null || seleccion.isEmpty()) {
+            JOptionPane.showMessageDialog(vista, "Seleccione una opción (S o N) para buscar.");
+            return;
+        }
+
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> lista = dao.buscarUsuariosPorDecJurada(seleccion);
+
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla
+
+        for (Usuario u : lista) {
+            Object[] fila = {
+                u.getDni(),
+                u.getNombre(),
+                u.getApellidos(),
+                u.getDeclaracionJurada(),
+                u.getCorreo(),
+                u.getCelular(),
+                u.getTipoUsuario(),
+                u.getFechaRegistro(),
+                u.getUrlDecJurada()
+            };
+            modelo.addRow(fila);
+        }
+    }
+
 }
