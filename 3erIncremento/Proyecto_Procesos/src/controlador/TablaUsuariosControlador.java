@@ -18,6 +18,8 @@ import modelo.Usuario;
 import modelo.UsuarioDAO;
 import vista.tablaUsuarios;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import modelo.ReporteUtil;
 
 public class TablaUsuariosControlador {
 
@@ -93,13 +95,22 @@ public class TablaUsuariosControlador {
                 }
             }
         });
+        //boton generar reporte (primera prueba)
+        /*
+         this.vista.btnReporteUsuarios.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+         generarReporteHTMLUsuarios(dao.listarUsuarios());
+         }
+         });*/
 
         this.vista.btnReporteUsuarios.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generarReporteHTMLUsuarios(dao.listarUsuarios());
+                generarReporteDesdeTabla();
             }
         });
+
 
         /*
          this.vista.btnBuscar.addActionListener(new ActionListener() {
@@ -294,7 +305,7 @@ public class TablaUsuariosControlador {
             modelo.addRow(fila);
         }
     }
-
+/*
     public void generarReporteHTMLUsuarios(List<Usuario> listaUsuarios) {
         String rutaArchivo = "reporte_usuarios.html";
 
@@ -341,5 +352,30 @@ public class TablaUsuariosControlador {
             JOptionPane.showMessageDialog(vista, "Error al generar el reporte: " + e.getMessage());
         }
     }
+*/
+    private void generarReporteDesdeTabla() {
+    DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
+    int filas = modelo.getRowCount();
+
+    List<Usuario> usuariosFiltrados = new ArrayList<>();
+
+    for (int i = 0; i < filas; i++) {
+        Usuario u = new Usuario();
+        u.setDni(Integer.parseInt(modelo.getValueAt(i, 0).toString()));
+        u.setNombre(modelo.getValueAt(i, 1).toString());
+        u.setApellidos(modelo.getValueAt(i, 2).toString());
+        u.setDeclaracionJurada(modelo.getValueAt(i, 3).toString());
+        u.setCorreo(modelo.getValueAt(i, 4).toString());
+        u.setCelular(modelo.getValueAt(i, 5).toString());
+        u.setTipoUsuario(modelo.getValueAt(i, 6).toString());
+        u.setFechaRegistro(modelo.getValueAt(i, 7).toString());
+        u.setUrlDecJurada(modelo.getValueAt(i, 8) != null ? modelo.getValueAt(i, 8).toString() : "");
+        
+        usuariosFiltrados.add(u);
+    }
+
+    ReporteUtil.generarReporteHTMLUsuarios(usuariosFiltrados);
+}
+
 
 }
