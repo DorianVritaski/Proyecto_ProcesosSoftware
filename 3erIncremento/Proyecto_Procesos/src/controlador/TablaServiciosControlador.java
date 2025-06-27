@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import modelo.DetalleServicio;
 import modelo.DetalleServicioDAO;
 import modelo.DetalleServicioVista;
+import modelo.ReporteUtil;
 import modelo.Servicio;
 import modelo.ServicioDAO;
 import vista.tablaServicios;
@@ -91,6 +92,13 @@ public class TablaServiciosControlador {
                         }
                     }
                 }
+            }
+        });
+
+        this.vista.btnReporteServicios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generarReporteDesdeTabla();
             }
         });
 
@@ -281,6 +289,43 @@ public class TablaServiciosControlador {
         } else {
             JOptionPane.showMessageDialog(vista, "No se encontraron servicios en ese rango de fechas.");
         }
+    }
+
+    private void generarReporteDesdeTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblServicios.getModel();
+        int filas = modelo.getRowCount();
+
+        List<Object[]> serviciosFiltrados = new ArrayList<>();
+
+        for (int i = 0; i < filas; i++) {
+            Object[] fila = new Object[7];
+            for (int j = 0; j < 7; j++) {
+                fila[j] = modelo.getValueAt(i, j);
+            }
+            serviciosFiltrados.add(fila);
+        }
+
+        // Opciones de reporte
+        String[] opciones = {"HTML", "Excel"};
+        int opcion = JOptionPane.showOptionDialog(
+                vista,
+                "¿Qué tipo de reporte deseas generar?",
+                "Generar Reporte de Servicios",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (opcion == 0) {
+            ReporteUtil.generarReporteHTMLServicios(serviciosFiltrados);
+        } else if (opcion == 1) {
+            ReporteUtil.generarReporteExcelServicios(serviciosFiltrados);
+        }
+        
+        
+        
     }
 
 }

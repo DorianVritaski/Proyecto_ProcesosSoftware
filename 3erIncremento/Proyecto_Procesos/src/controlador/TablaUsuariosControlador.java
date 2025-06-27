@@ -5,19 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+//import java.io.BufferedWriter;
+//import java.io.File;
+//import java.io.FileWriter;
+//import java.io.IOException;
 import java.net.URI;
-import java.sql.Date;
+//import java.sql.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
 import vista.tablaUsuarios;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import modelo.ReporteUtil;
 
@@ -305,77 +305,98 @@ public class TablaUsuariosControlador {
             modelo.addRow(fila);
         }
     }
-/*
-    public void generarReporteHTMLUsuarios(List<Usuario> listaUsuarios) {
-        String rutaArchivo = "reporte_usuarios.html";
+    /*
+     public void generarReporteHTMLUsuarios(List<Usuario> listaUsuarios) {
+     String rutaArchivo = "reporte_usuarios.html";
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo))) {
-            writer.write("<html>");
-            writer.write("<head>");
-            writer.write("<meta charset='UTF-8'>");
-            writer.write("<title>Reporte de Usuarios</title>");
-            writer.write("<style>");
-            writer.write("body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }");
-            writer.write("h2 { color: #333; text-align: center; }");
-            writer.write("table { width: 100%; border-collapse: collapse; background-color: #fff; }");
-            writer.write("th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }");
-            writer.write("th { background-color: #007BFF; color: white; }");
-            writer.write("tr:nth-child(even) { background-color: #f2f2f2; }");
-            writer.write("tr:hover { background-color: #e9e9e9; }");
-            writer.write("</style>");
-            writer.write("</head>");
-            writer.write("<body>");
+     try (BufferedWriter writer = new BufferedWriter(new FileWriter(rutaArchivo))) {
+     writer.write("<html>");
+     writer.write("<head>");
+     writer.write("<meta charset='UTF-8'>");
+     writer.write("<title>Reporte de Usuarios</title>");
+     writer.write("<style>");
+     writer.write("body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }");
+     writer.write("h2 { color: #333; text-align: center; }");
+     writer.write("table { width: 100%; border-collapse: collapse; background-color: #fff; }");
+     writer.write("th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }");
+     writer.write("th { background-color: #007BFF; color: white; }");
+     writer.write("tr:nth-child(even) { background-color: #f2f2f2; }");
+     writer.write("tr:hover { background-color: #e9e9e9; }");
+     writer.write("</style>");
+     writer.write("</head>");
+     writer.write("<body>");
 
-            writer.write("<h2>Reporte de Usuarios</h2>");
-            writer.write("<table>");
-            writer.write("<tr><th>DNI</th><th>Nombre</th><th>Apellidos</th><th>Correo</th></tr>");
+     writer.write("<h2>Reporte de Usuarios</h2>");
+     writer.write("<table>");
+     writer.write("<tr><th>DNI</th><th>Nombre</th><th>Apellidos</th><th>Correo</th></tr>");
 
-            for (Usuario u : listaUsuarios) {
-                writer.write("<tr>");
-                writer.write("<td>" + u.getDni() + "</td>");
-                writer.write("<td>" + u.getNombre() + "</td>");
-                writer.write("<td>" + u.getApellidos() + "</td>");
-                writer.write("<td>" + u.getCorreo() + "</td>");
-                writer.write("</tr>");
-            }
+     for (Usuario u : listaUsuarios) {
+     writer.write("<tr>");
+     writer.write("<td>" + u.getDni() + "</td>");
+     writer.write("<td>" + u.getNombre() + "</td>");
+     writer.write("<td>" + u.getApellidos() + "</td>");
+     writer.write("<td>" + u.getCorreo() + "</td>");
+     writer.write("</tr>");
+     }
 
-            writer.write("</table>");
-            writer.write("</body>");
-            writer.write("</html>");
-            writer.flush();
+     writer.write("</table>");
+     writer.write("</body>");
+     writer.write("</html>");
+     writer.flush();
 
-            // Abre el archivo HTML en el navegador predeterminado
-            File archivo = new File(rutaArchivo);
-            Desktop.getDesktop().browse(archivo.toURI());
+     // Abre el archivo HTML en el navegador predeterminado
+     File archivo = new File(rutaArchivo);
+     Desktop.getDesktop().browse(archivo.toURI());
 
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(vista, "Error al generar el reporte: " + e.getMessage());
+     } catch (IOException e) {
+     JOptionPane.showMessageDialog(vista, "Error al generar el reporte: " + e.getMessage());
+     }
+     }
+     */
+
+    private void generarReporteDesdeTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
+        int filas = modelo.getRowCount();
+
+        if (filas == 0) {
+            JOptionPane.showMessageDialog(vista, "No hay datos para generar el reporte.");
+            return;
+        }
+
+        List<Usuario> usuariosFiltrados = new ArrayList<>();
+
+        for (int i = 0; i < filas; i++) {
+            Usuario u = new Usuario();
+            u.setDni(Integer.parseInt(modelo.getValueAt(i, 0).toString()));
+            u.setNombre(modelo.getValueAt(i, 1).toString());
+            u.setApellidos(modelo.getValueAt(i, 2).toString());
+            u.setDeclaracionJurada(modelo.getValueAt(i, 3).toString());
+            u.setCorreo(modelo.getValueAt(i, 4).toString());
+            u.setCelular(modelo.getValueAt(i, 5).toString());
+            u.setTipoUsuario(modelo.getValueAt(i, 6).toString());
+            u.setFechaRegistro(modelo.getValueAt(i, 7).toString());
+            u.setUrlDecJurada(modelo.getValueAt(i, 8) != null ? modelo.getValueAt(i, 8).toString() : "");
+
+            usuariosFiltrados.add(u);
+        }
+
+        // Diálogo para seleccionar formato
+        Object[] opciones = {"HTML", "Excel (.xls)"};
+        int eleccion = JOptionPane.showOptionDialog(
+                vista,
+                "¿En qué formato desea generar el reporte?",
+                "Seleccionar Formato de Reporte",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]);
+
+        if (eleccion == 0) {
+            ReporteUtil.generarReporteHTMLUsuarios(usuariosFiltrados);
+        } else if (eleccion == 1) {
+            ReporteUtil.generarReporteXLSUsuarios(usuariosFiltrados);
         }
     }
-*/
-    private void generarReporteDesdeTabla() {
-    DefaultTableModel modelo = (DefaultTableModel) vista.tblUsuarios.getModel();
-    int filas = modelo.getRowCount();
-
-    List<Usuario> usuariosFiltrados = new ArrayList<>();
-
-    for (int i = 0; i < filas; i++) {
-        Usuario u = new Usuario();
-        u.setDni(Integer.parseInt(modelo.getValueAt(i, 0).toString()));
-        u.setNombre(modelo.getValueAt(i, 1).toString());
-        u.setApellidos(modelo.getValueAt(i, 2).toString());
-        u.setDeclaracionJurada(modelo.getValueAt(i, 3).toString());
-        u.setCorreo(modelo.getValueAt(i, 4).toString());
-        u.setCelular(modelo.getValueAt(i, 5).toString());
-        u.setTipoUsuario(modelo.getValueAt(i, 6).toString());
-        u.setFechaRegistro(modelo.getValueAt(i, 7).toString());
-        u.setUrlDecJurada(modelo.getValueAt(i, 8) != null ? modelo.getValueAt(i, 8).toString() : "");
-        
-        usuariosFiltrados.add(u);
-    }
-
-    ReporteUtil.generarReporteHTMLUsuarios(usuariosFiltrados);
-}
-
 
 }
