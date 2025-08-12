@@ -291,41 +291,45 @@ public class TablaServiciosControlador {
         }
     }
 
-    private void generarReporteDesdeTabla() {
-        DefaultTableModel modelo = (DefaultTableModel) vista.tblServicios.getModel();
-        int filas = modelo.getRowCount();
+   private void generarReporteDesdeTabla() {
+    DefaultTableModel modelo = (DefaultTableModel) vista.tblServicios.getModel();
+    int filas = modelo.getRowCount();
 
-        List<Object[]> serviciosFiltrados = new ArrayList<>();
-
-        for (int i = 0; i < filas; i++) {
-            Object[] fila = new Object[7];
-            for (int j = 0; j < 7; j++) {
-                fila[j] = modelo.getValueAt(i, j);
-            }
-            serviciosFiltrados.add(fila);
-        }
-
-        // Opciones de reporte
-        String[] opciones = {"HTML", "Excel"};
-        int opcion = JOptionPane.showOptionDialog(
-                vista,
-                "¿Qué tipo de reporte deseas generar?",
-                "Generar Reporte de Servicios",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                opciones[0]
-        );
-
-        if (opcion == 0) {
-            ReporteUtil.generarReporteHTMLServicios(serviciosFiltrados);
-        } else if (opcion == 1) {
-            ReporteUtil.generarReporteExcelServicios(serviciosFiltrados);
-        }
-        
-        
-        
+    // Validación: si no hay filas, no genera el reporte
+    if (filas == 0) {
+        JOptionPane.showMessageDialog(vista, "No hay registros en la tabla para generar el reporte.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        return; // Sale del método
     }
+
+    List<Object[]> serviciosFiltrados = new ArrayList<>();
+
+    for (int i = 0; i < filas; i++) {
+        Object[] fila = new Object[7];
+        for (int j = 0; j < 7; j++) {
+            fila[j] = modelo.getValueAt(i, j);
+        }
+        serviciosFiltrados.add(fila);
+    }
+
+    // Opciones de reporte
+    String[] opciones = {"HTML", "Excel"};
+    int opcion = JOptionPane.showOptionDialog(
+            vista,
+            "¿Qué tipo de reporte deseas generar?",
+            "Generar Reporte de Servicios",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+    );
+
+    if (opcion == 0) {
+        ReporteUtil.generarReporteHTMLServicios(serviciosFiltrados);
+    } else if (opcion == 1) {
+        ReporteUtil.generarReporteExcelServicios(serviciosFiltrados);
+    }
+}
+
 
 }
