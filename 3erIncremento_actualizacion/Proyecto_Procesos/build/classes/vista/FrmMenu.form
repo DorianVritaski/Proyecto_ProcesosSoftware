@@ -54,7 +54,7 @@
               <Component id="btnReg" alignment="0" max="32767" attributes="0"/>
               <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
               <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
-              <Component id="jButton1" alignment="0" pref="163" max="32767" attributes="0"/>
+              <Component id="btnAddUser" alignment="0" pref="163" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -66,7 +66,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton3" min="-2" pref="48" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="48" max="-2" attributes="0"/>
+                  <Component id="btnAddUser" min="-2" pref="48" max="-2" attributes="0"/>
                   <EmptySpace pref="86" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -109,7 +109,7 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnAddUser">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="sansserif" size="12" style="1"/>
@@ -119,6 +119,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar Usuario"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

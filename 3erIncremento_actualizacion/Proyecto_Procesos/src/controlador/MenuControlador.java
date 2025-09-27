@@ -5,6 +5,7 @@ import vista.FrmRegistroUsuario;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import vista.FrmAgregarUsuarioSis;
 
 public class MenuControlador {
     private FrmMenu vista;
@@ -21,5 +22,18 @@ public class MenuControlador {
                 vistaRegistro.setVisible(true);
             }
         });
+        
+        this.vista.btnAddUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                FrmAgregarUsuarioSis vistaAddUser = new FrmAgregarUsuarioSis();
+                new UsuarioSistemaControlador(vistaAddUser);
+                vistaAddUser.setLocationRelativeTo(null);
+                vistaAddUser.setVisible(true);
+            }
+        
+        });
+        
+        
     }
 }

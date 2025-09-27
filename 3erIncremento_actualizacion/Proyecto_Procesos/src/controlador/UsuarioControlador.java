@@ -11,15 +11,11 @@ import modelo.DetalleServicioDAO;
 import modelo.Servicio;
 import modelo.ServicioDAO;
 
-
-
-
 public class UsuarioControlador {
     private FrmRegistroUsuario vista;
     private UsuarioDAO dao;
     //private DetalleServicioDAO dao;
     //private DetalleServicioDAO detalleDao;
-    
     
     public UsuarioControlador(FrmRegistroUsuario vista){
         this.vista = vista;
